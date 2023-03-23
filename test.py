@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import pytesseract
 import pandas as pd
+import re
 
 
 # read frame from videos
@@ -32,7 +33,7 @@ if text:
     print(text)
     n_boxes = len(text['level'])
     for i in range(n_boxes):
-        if int(text['conf'][i]) > 60:
+        if int(text['conf'][i]) > 60 and re.match(r"\d+[_-][a-zA-Z][_-]\d+[a-zA-Z][-_]\d+", text['text'][i]):
             (x, y, w, h) = (text['left'][i], text['top'][i], text['width'][i], text['height'][i])
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
